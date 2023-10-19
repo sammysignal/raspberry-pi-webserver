@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Sammy's Answering Machine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="demo.css" />
+    <script>
+      const PORT = "<%= port %>";
+    </script>
+  </head>
+  <body>
+    <h1>Leave me a message!</h1>
+    <div style="max-width: 28em">
+      <p>Please make sure message is less than 30 seconds.</p>
+      <div id="controls">
+        <button id="recordButton">Record</button>
+        <button id="stopButton" disabled="">Stop</button>
+      </div>
+      <div id="formats"></div>
+      <pre>Log</pre>
+      <pre id="log"></pre>
+
+      <pre>Recordings</pre>
+      <ol id="recordingsList"></ol>
+    </div>
+
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+    <script src="WebAudioRecorder.min.js"></script>
+    <script src="demo.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <system.webServer>
+      <staticContent>
+        <mimeMap fileExtension=".mem" mimeType="text/html" />
+      </staticContent>
+    </system.webServer>
+    <meta charset="utf-8" />
+    <meta name-"viewport" content="width=device-width, initial-scale=1" />
+    <title>Sammy's R-Pi</title>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <h1>Welcome to Sammy's Website!</h1>
+    <h2>This page is being served by my Raspberry Pi in nyc.</h2>
+    <p>This page has been viewed <b><%= count %></b> times!</p>
+    <p>Your browser info: <%= browser %></p>
+    <button onclick="location.href = '/record';" class="float-left submit-button" >Leave me a voice message!</button>
+    <br />
+    <br />
+
+    <script src="/WebAudioRecorder.min.js"></script>
+    <script src="/index.js"></script>
+  </body>
+</html>

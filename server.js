@@ -1,39 +1,73 @@
-const {readFileSync, writeFileSync} = require('fs');
-const express = require('express');
-const config = require('./config');
+const { readFileSync, writeFileSync, readdir } = require("fs");
+const ejs = require("ejs");
+const express = require("express");
+const bodyParser = require("body-parser");
+const config = require("./config");
 
 const app = express();
 
+app.use(express.static("public"));
+
 app.listen(config.port, () => {
-	console.log(`http://localhost:${config.port}`);
-	console.log(config.port)
+  console.log(`http://localhost:${config.port}`);
+  console.log(config.port);
 });
 
+app.get("/", (req, res) => {
+  const count = readFileSync("./count.txt", "utf-8");
+  console.log("count", count);
+  const newCount = parseInt(count) + 1;
+  writeFileSync("./count.txt", newCount.toString());
 
-app.get('/', (req, res) => {
-	const count = readFileSync('./count.txt', 'utf-8');
-	console.log('count', count);
-	const newCount = parseInt(count) + 1;
-	writeFileSync('./count.txt', newCount.toString());
+  const browser = req.headers["user-agent"];
 
-	const browser = req.headers["user-agent"];
+  let data = {
+    count: newCount.toString(),
+    browser: browser,
+  };
 
-	res.send(`
-	  <!DOCTYPE html>
-	  <html lang="en">
-	    <head>
-	      <meta charset="utf-8" />
-          <meta name-"viewport" content="width=device-width, initial-scale=1" />
-          <title>Sammy's R-Pi</title>
-	    </head>
-	    <body>
-	      <h1>Welcome to Sammy's Website!</h1>
-		  <h2>This page is being served by my Raspberry Pi in nyc.</h2>
-		  <p>This page has been viewed <b>${newCount}</b> times!</p>
-		  <p>Your browser info: ${browser}</p>
+  ejs.renderFile("./index.html", data, {}, function (err, str) {
+    if (err) {
+      console.log(err);
+    }
+    res.send(str);
+  });
+});
 
-		  <!-- Sammy Signal Spotify Embed-->
-		  <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/2HsyknHuxhT8RoZfn5rqMS?utm_source=generator&theme=0" width="100%" height="500" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-	    </body>
-	  </html>`);
-})
+app.get("/record", (req, res) => {
+  ejs.renderFile("./record.html", { port: config.port }, {}, function (err, str) {
+    if (err) {
+      console.log(err);
+    }
+    res.send(str);
+  });
+});
+
+app.get("/listen", (req, res) => {
+  readdir("./public/messages", (err, files) => {
+    const filesWithPrefix = files.map((file) => {
+      return "messages/" + file;
+    });
+
+    console.log(files);
+    ejs.renderFile("./listen.html", { messages: filesWithPrefix }, {}, function (err, str) {
+      if (err) {
+        console.log(err);
+      }
+      res.send(str);
+    });
+  });
+});
+
+app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res) => {
+  console.log("received upload");
+  const body = req.body;
+  const blob = new Blob([body], { type: "application/octet-stream" });
+  const arrayBuffer = await blob.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+
+  const dateTime = new Date().toISOString();
+  writeFileSync(`./public/messages/${dateTime}.wav`, buffer);
+  return res.send("done!");
+});
+
