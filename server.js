@@ -46,7 +46,7 @@ app.get("/record", (req, res) => {
 app.get("/listen", (req, res) => {
   readdir("./public/messages", (err, files) => {
     if (!files) {
-      res.send('No messages.');
+      res.send("No messages.");
       return;
     }
     const filesWithPrefix = files.map((file) => {
@@ -74,4 +74,3 @@ app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res)
   writeFileSync(`./public/messages/${dateTime}.wav`, buffer);
   return res.send("done!");
 });
-
