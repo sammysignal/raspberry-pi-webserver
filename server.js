@@ -45,6 +45,10 @@ app.get("/record", (req, res) => {
 
 app.get("/listen", (req, res) => {
   readdir("./public/messages", (err, files) => {
+    if (!files) {
+      res.send('No messages.');
+      return;
+    }
     const filesWithPrefix = files.map((file) => {
       return "messages/" + file;
     });
