@@ -66,10 +66,13 @@ app.get("/listen", (req, res) => {
 
 app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res) => {
   console.log("received upload");
+  //   const body = req.body;
+  //   const blob = new Blob([body], { type: "application/octet-stream" });
+  //   const arrayBuffer = await blob.arrayBuffer();
+  //   const buffer = Buffer.from(arrayBuffer);
+
   const body = req.body;
-  const blob = new Blob([body], { type: "application/octet-stream" });
-  const arrayBuffer = await blob.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
+  const buffer = Buffer.from(body);
 
   const dateTime = new Date().toISOString();
   writeFileSync(`./public/messages/${dateTime}.wav`, buffer);
