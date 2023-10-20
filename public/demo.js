@@ -124,7 +124,7 @@ function stopRecording() {
 async function createDownloadLink(blob, encoding) {
   console.log(blob);
 
-  fetch(`http://localhost:${PORT}/upload`, {
+  fetch(`${window.location.origin}/upload`, {
     method: "POST",
     body: blob,
     headers: { "Content-Type": "audio/wav" },
