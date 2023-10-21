@@ -46,10 +46,6 @@ function startRecording() {
 		*/
       audioContext = new AudioContext();
 
-      //update the format
-      document.getElementById("formats").innerHTML =
-        "Format: 2 channel " + "wav" + " @ " + audioContext.sampleRate / 1000 + "kHz";
-
       //assign to gumStream for later use
       gumStream = stream;
 
@@ -115,6 +111,16 @@ function stopRecording() {
   stopButton.disabled = true;
   recordButton.disabled = false;
 
+  let statusEl = document.createElement('span');
+  statusEl.id = 'status';
+  statusEl.innerHTML = 'Sending...';
+
+  recordButton.after(statusEl)
+
+  stopButton.remove()
+  recordButton.remove()
+
+
   //tell the recorder to finish the recording (stop recording + encode the recorded audio)
   recorder.finishRecording();
 
@@ -124,22 +130,21 @@ function stopRecording() {
 async function createDownloadLink(blob, encoding) {
   console.log(blob);
 
-  fetch(`${window.location.origin}/upload`, {
+  let response = await fetch(`${window.location.origin}/upload`, {
     method: "POST",
     body: blob,
     headers: { "Content-Type": "audio/wav" },
-  })
-    .then((response) => {
-      if (response.ok) return response;
-      else throw Error(`Server returned ${response.status}: ${response.statusText}`);
-    })
-    .then((response) => console.log(response.text()))
-    .catch((err) => {
-      alert(err);
-    });
+  });
+
+  if (response.ok) {
+    document.getElementById('status').innerHTML = 'Sent!';
+    const json = await response.json();
+    alert(json.message);
+    return;
+  } else throw Error(`Server returned ${response.status}: ${response.statusText}`);
 }
 
 //helper function
 function __log(e, data) {
-  console.log(e + " " + (data || ""))
+  console.log(e + " " + (data || ""));
 }

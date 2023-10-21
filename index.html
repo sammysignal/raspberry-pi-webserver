@@ -16,9 +16,10 @@
     <h2>This page is being served by my Raspberry Pi in nyc.</h2>
     <p>This page has been viewed <b><%= count %></b> times!</p>
     <p>Your browser info: <%= browser %></p>
-    <button onclick="location.href = '/record';" class="float-left submit-button" >Leave me a voice message!</button>
     <br />
     <br />
+    <button id="record" onclick="location.href = '/record';" class="float-left submit-button" >Leave me a voice message!</button>
+
 
     <script src="/WebAudioRecorder.min.js"></script>
     <script src="/index.js"></script>

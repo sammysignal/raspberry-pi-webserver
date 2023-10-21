@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <!-- Audio player for each wav file -->
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>Audio Player</title>
-    </head>
-    <body>
-        <% messages.forEach(function(messageUrl){ %>
-            <p><%= messageUrl %>:</p>
-            <audio style="display: block; margin-bottom: 10px;" controls>
-                <source src="<%= messageUrl %>" type="audio/wav" />
-                Your browser does not support the audio element.
-            </audio>
-        <% }); %>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Audio Player</title>
+  </head>
+  <body>
+    <% messages.forEach(function(messageUrl){ %>
+      <p><%= messageUrl %>:</p>
+      <audio style="display: block; margin-bottom: 10px" controls>
+      <source src="<%= messageUrl %>" type="audio/wav" />
+        Your browser does not support the audio element.
+      </audio>
+    <% }); %>
+  </body>
 </html>
