@@ -1,5 +1,5 @@
 // Library imports
-const { readFileSync, writeFileSync, readdir } = require("fs");
+const { readFileSync, writeFileSync, readdir, unlink } = require("fs");
 const ejs = require("ejs");
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -53,14 +53,8 @@ app.get("/record", (req, res) => {
   });
 });
 
-// Get the messages
-app.get("/listen", (req, res) => {
-  const passwordTry = req.query.p;
-  if (passwordTry !== config.VOICEMAIL_PASSWORD) {
-	res.send("<h1>You must be authorized to view this page.</h1>");
-	return;
-  }
-
+// Get the messages. Hidden endpoint
+app.get(`/${config.VOICEMAIL_ACCESS_URL}`, (req, res) => {
   readdir("./public/messages", (e, files) => {
     if (e) {
       console.error(e);
@@ -79,6 +73,29 @@ app.get("/listen", (req, res) => {
       }
       res.send(str);
     });
+  });
+});
+
+// Clear all messages. Hidden endpoint
+app.post(`/${config.VOICEMAIL_ACCESS_URL}delete`, (req, res) => {
+  readdir("./public/messages", (e, files) => {
+    if (e) {
+      console.error(e);
+    }
+    if (!files) {
+      res.json('{ message: "No files to delete." }');
+      return;
+    }
+
+    files.forEach((file) => {
+      unlink(`./public/messages/${file}`, (err) => {
+        if (err) {
+          console.error(err);
+        }
+      });
+    });
+
+    res.json('{ message: "Messages deleted." }');
   });
 });
 
@@ -113,11 +130,11 @@ app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res)
 
     sendNotificationEmail(text, completion);
 
-	let response = {
-		message: completion,
-	}
+    let response = {
+      message: completion,
+    };
 
-	response.message = "Message received! " + response.message;
+    response.message = "Message received! " + response.message;
 
     return res.send(JSON.stringify(response));
   });
