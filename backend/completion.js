@@ -18,7 +18,7 @@ async function getOpenAICompletion(openai, text) {
     frequency_penalty: 0,
     presence_penalty: 0,
     messages: [
-      { role: "system", content: "Come up with a funny quip about the last thing the user said." },
+      { role: "system", content: "You are a happy-go-lucky person. Come up with a funny quip about the last thing the user said." },
       { role: "user", content: text },
     ],
   });
