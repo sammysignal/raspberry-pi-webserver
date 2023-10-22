@@ -55,6 +55,12 @@ app.get("/record", (req, res) => {
 
 // Get the messages
 app.get("/listen", (req, res) => {
+  const passwordTry = req.query.p;
+  if (passwordTry !== config.VOICEMAIL_PASSWORD) {
+	res.send("<h1>You must be authorized to view this page.</h1>");
+	return;
+  }
+
   readdir("./public/messages", (e, files) => {
     if (e) {
       console.error(e);

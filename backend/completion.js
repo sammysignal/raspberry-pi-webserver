@@ -1,9 +1,14 @@
-const { toFile } = require("openai");
 const config = require("../config");
 
 const formData = require("form-data");
 const Mailgun = require("mailgun.js");
 
+/**
+ * Get an OpenAi chat response based on the user input
+ * @param {*} openai - OpenAI client
+ * @param {string} text - User input as text
+ * @returns
+ */
 async function getOpenAICompletion(openai, text) {
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
@@ -23,8 +28,8 @@ async function getOpenAICompletion(openai, text) {
 
 /**
  * Convert audio to text using OpenAI
- * @param {*} openai - OpenAI client
- * @param {*} audioFile - Audio file
+ * @param {OpenAI} openai - OpenAI client
+ * @param {File} audioFile - Audio file
  * @returns
  */
 async function getAudioText(openai, audioFile) {
@@ -44,6 +49,11 @@ async function getAudioText(openai, audioFile) {
   }
 }
 
+/**
+ * Send an email notification
+ * @param {string} text - Input of the user as a string
+ * @param {string} completion - Completion response from OpenAI
+ */
 function sendNotificationEmail(text, completion) {
   const mailgun = new Mailgun(formData);
   const mg = mailgun.client({ username: "api", key: config.MAILGUN_EMAIL_API_KEY });
