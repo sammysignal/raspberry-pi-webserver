@@ -2,6 +2,8 @@
 
 This is a pretty simple express.js webserver that records voice messages and saves them locally. It was originally built for my Raspberry Pi.
 
+Check out my [medium post](https://medium.com/@sammysignal/how-i-built-a-voicemail-server-on-raspberry-pi-10646328fb3d) for details on how this was made.
+
 ## Features
 
 - Ability to leave a voice message that is saved on the server.
