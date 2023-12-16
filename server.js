@@ -136,6 +136,6 @@ app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res)
 
     response.message = "Message received! " + response.message;
 
-    return res.send(JSON.stringify(response));
+    return res.json(response);
   });
 });

@@ -5,7 +5,7 @@ const Mailgun = require("mailgun.js");
 
 /**
  * Get an OpenAi chat response based on the user input
- * @param {*} openai - OpenAI client
+ * @param {OpenAI} openai - OpenAI client
  * @param {string} text - User input as text
  * @returns
  */
@@ -18,7 +18,10 @@ async function getOpenAICompletion(openai, text) {
     frequency_penalty: 0,
     presence_penalty: 0,
     messages: [
-      { role: "system", content: "You are a happy-go-lucky person. Come up with a funny quip about the last thing the user said." },
+      {
+        role: "system",
+        content: "You are a happy-go-lucky person. Come up with a funny quip about the last thing the user said.",
+      },
       { role: "user", content: text },
     ],
   });
@@ -33,20 +36,15 @@ async function getOpenAICompletion(openai, text) {
  * @returns
  */
 async function getAudioText(openai, audioFile) {
-  try {
-    const audioText = await openai.audio.transcriptions.create({
-      file: audioFile,
-      model: "whisper-1",
-      language: "en",
-      temperature: 0.9,
-      response_format: "json",
-    });
+  const audioText = await openai.audio.transcriptions.create({
+    file: audioFile,
+    model: "whisper-1",
+    language: "en",
+    temperature: 0.9,
+    response_format: "json",
+  });
 
-    return audioText.text;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+  return audioText.text;
 }
 
 /**
