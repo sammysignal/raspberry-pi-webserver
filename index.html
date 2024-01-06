@@ -11,15 +11,24 @@
     <title>Sammy's R-Pi</title>
     <link rel="stylesheet" href="index.css" />
     <link rel="stylesheet" type="text/css" href="demo.css" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9X0TZXHJPJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-9X0TZXHJPJ');
+    </script>
   </head>
   <body>
     <h1>Welcome to Sammy's Website!</h1>
     <h2>This page is being served by my Raspberry Pi in nyc.</h2>
     <p>This page has been viewed <b><%= count %></b> times!</p>
-    <p>Your browser info: <%= browser %></p>
-    <br />
     <br />
     <button id="record" onclick="location.href = '/record';" class="float-left submit-button" >Leave me a voice message!</button>
+    <p>Click <a href="https://medium.com/@sammysignal/how-i-built-a-voicemail-server-on-raspberry-pi-10646328fb3d">here</a> for the medium article where I detail how you can build this yourself!</p>
+    <p>My homepage: <a href="https://sameermehra.com">sameermehra.com</a></p>
 
 
     <script src="/WebAudioRecorder.min.js"></script>
