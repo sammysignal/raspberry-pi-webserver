@@ -8,11 +8,23 @@
   </head>
   <body>
     <% messages.forEach(function(messageUrl){ %>
-      <p><%= messageUrl %>:</p>
-      <audio style="display: block; margin-bottom: 10px" controls>
-      <source src="<%= messageUrl %>" type="audio/wav" />
-        Your browser does not support the audio element.
-      </audio>
+      <div style="width: 90%; display: flex; border: 1px solid black; padding: 10px; margin: 1%; height: 100px;font-size: larger;">
+        <div style="display: flex; flex-direction: column; justify-content: center">
+          <p style="display: inline-block; margin: 0 auto; "><%= messageUrl %>:</p>
+        </div>
+        <audio style="display: block; margin: 0 auto" controls>
+          <source src="<%= messageUrl %>" type="audio/wav" />
+          Your browser does not support the audio element.
+        </audio>
+        <button
+          type="button"
+          style="margin: 0 auto; background-color: lightgoldenrodyellow; cursor: pointer; border-radius: 10px"
+          data-url="<%= messageUrl %>"
+          onclick="deleteVoicemail(this)"
+        >
+          Delete
+        </button>
+      </div>
     <% }); %>
     <br />
     <button onclick="deleteAllVoicemail()">Delete All Voicemail</button>

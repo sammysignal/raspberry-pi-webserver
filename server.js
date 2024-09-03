@@ -99,6 +99,22 @@ app.post(`/${config.VOICEMAIL_ACCESS_URL}delete`, (req, res) => {
   });
 });
 
+// Delete a single message.
+// expecting queryParam of the form toDelete=messages/blah.wav
+app.post(`/${config.VOICEMAIL_ACCESS_URL}deleteOne`, (req, res) => {
+  console.log('req.query:')
+  console.log(req.query);
+  const fileToDelete = req.query['toDelete'].split('/')[1];
+  console.log('deleting file:')
+  console.log(fileToDelete);
+  unlink(`./public/messages/${fileToDelete}`,  (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+  res.json('{ message: "Message deleted." }');
+});
+
 // Upload an audio file message, and get a response from OpenAI
 app.post("/upload", express.raw({ type: "*/*", limit: "6mb" }), async (req, res) => {
   console.log("received upload");
